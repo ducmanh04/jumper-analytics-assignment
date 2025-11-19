@@ -2,8 +2,9 @@
 
 > **Production-grade PostgreSQL analytics system identifying content strategy opportunities through engagement pattern analysis**
 
-[![Live Demo](https://img.shields.io/badge/Live_Demo-jumper--analytics.shaily.dev-blue?style=for-the-badge)](https://jumper-analytics.shaily.dev)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-jumper--analytics.shaily.dev-blue?style=for-the-badge)](https://jumper-analytics.shaily.dev/dashboard)
 [![API Docs](https://img.shields.io/badge/API-FastAPI_Swagger-009688?style=for-the-badge)](https://jumper-analytics.shaily.dev/docs)
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://github.com/SHAILY24/jumper-analytics-assignment)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-336791?style=for-the-badge&logo=postgresql)](https://www.postgresql.org/)
 [![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=for-the-badge&logo=python)](https://www.python.org/)
 
@@ -80,13 +81,30 @@ curl "https://jumper-analytics.shaily.dev/analytics/opportunity-authors?limit=10
 
 ### Interactive Dashboard
 
-The live dashboard at [/dashboard](https://jumper-analytics.shaily.dev/dashboard) provides:
-- Real-time visualizations with Chart.js
-- Category performance bar charts
-- Day-of-week engagement trends
-- Hour × Day heatmap for optimal posting times
+The live dashboard at [/dashboard](https://jumper-analytics.shaily.dev/dashboard) features a professional tabbed interface:
+
+**Dashboard Tab** - Real-time Analytics:
+- Interactive Chart.js visualizations with professional teal/slate design
+- Category performance bar charts with engagement metrics
+- Day-of-week engagement trends with time-series analysis
+- Hour × Day engagement heatmap for optimal posting times
 - Top authors and coaching opportunity tables
-- All data fetched from live PostgreSQL via API
+- All data fetched live from PostgreSQL via FastAPI
+
+**About Project Tab** - Complete Technical Documentation:
+- Full project overview with problem statement and business impact
+- Complete database schema with visual tree structure
+- All 3 production SQL queries with syntax highlighting
+- Technology stack breakdown (PostgreSQL, FastAPI, Docker, Nginx)
+- Performance optimization details (materialized views, indexes)
+- API endpoint documentation
+- Business insights and recommendations
+
+**Navigation Features**:
+- Direct links to API Documentation (FastAPI Swagger)
+- GitHub repository link with icon
+- Responsive design for mobile/tablet viewing
+- Clean professional design (no typical LLM purple gradients)
 
 ---
 
@@ -205,20 +223,20 @@ Real data from the live analytics system showing actual engagement patterns and 
 
 Top-performing authors across categories (last 90 days):
 
-| Author | Category | Segment Category | Posts | Views | Likes | Comments | Total Engagement | Avg/Post | Rank |
-|--------|----------|------------------|-------|-------|-------|----------|------------------|----------|------|
-| Author_6 | Lifestyle | Health | 19 | 80 | 17 | 1 | 98 | 5.16 | 1 |
-| Author_26 | Business | Tech | 24 | 75 | 10 | 0 | 85 | 3.54 | 1 |
-| Author_32 | Tech | Finance | 15 | 55 | 9 | 1 | 65 | 4.33 | 1 |
-| Author_14 | Entertainment | Lifestyle | 14 | 53 | 8 | 2 | 63 | 4.50 | 1 |
-| Author_28 | Lifestyle | Business | 16 | 53 | 7 | 1 | 61 | 3.81 | 2 |
-| Author_10 | Business | Health | 13 | 49 | 9 | 1 | 59 | 4.54 | 2 |
-| Author_22 | Lifestyle | Business | 13 | 51 | 7 | 0 | 58 | 4.46 | 3 |
-| Author_28 | Lifestyle | Tech | 13 | 48 | 3 | 0 | 51 | 3.92 | 4 |
-| Author_5 | Business | Entertainment | 14 | 47 | 3 | 0 | 50 | 3.57 | 3 |
-| Author_19 | Tech | Finance | 9 | 45 | 5 | 0 | 50 | 5.56 | 2 |
+| Author | Category | Posts | Views | Likes | Comments | Total Engagement | Avg/Post |
+|--------|----------|-------|-------|-------|----------|------------------|----------|
+| Edward Patterson MD | Finance | 208 | 1262 | 165 | 22 | 1450 | 6.97 |
+| Margaret Robertson | Health | 205 | 1137 | 147 | 11 | 1297 | 6.33 |
+| Matthew Harris | Tech | 190 | 1121 | 144 | 10 | 1275 | 6.71 |
+| Michael Evans | Business | 202 | 1080 | 159 | 13 | 1252 | 6.20 |
+| John Brooks | Tech | 203 | 1090 | 133 | 24 | 1247 | 6.14 |
+| James Mendez | Entertainment | 203 | 1062 | 173 | 9 | 1244 | 6.13 |
+| John Padilla | Entertainment | 225 | 1048 | 168 | 11 | 1227 | 5.45 |
+| Robin Roberts | Lifestyle | 217 | 1036 | 152 | 16 | 1204 | 5.55 |
+| Emma Combs | Lifestyle | 210 | 1011 | 161 | 14 | 1186 | 5.65 |
+| Ernest Woods | Finance | 229 | 1032 | 138 | 13 | 1183 | 5.17 |
 
-**Key Insight**: Top performers average 4.5+ engagements per post, with Tech and Lifestyle categories showing strongest performance.
+**Key Insight**: Top performers average 6+ engagements per post, with Finance and Tech categories showing strongest performance. Edward Patterson MD leads with 6.97 avg engagement across 208 posts.
 
 ### Query 2: High-Opportunity Authors (Coaching Targets)
 
@@ -226,22 +244,22 @@ Authors with highest improvement potential (high volume + below-median engagemen
 
 | Author | Category | Posts | Current Avg | Category Median | Segment | Opportunity Score |
 |--------|----------|-------|-------------|-----------------|---------|-------------------|
-| Author_18 | Business | 83 | 1.04 | 1.56 | High Volume, Low Engagement | **43** |
-| Author_16 | Business | 85 | 1.08 | 1.56 | High Volume, Low Engagement | **41** |
-| Author_29 | Lifestyle | 81 | 1.25 | 1.75 | High Volume, Low Engagement | **41** |
-| Author_37 | Lifestyle | 79 | 1.30 | 1.75 | High Volume, Low Engagement | **36** |
-| Author_36 | Health | 74 | 0.95 | 1.44 | High Volume, Low Engagement | **36** |
-| Author_31 | Lifestyle | 77 | 1.29 | 1.75 | High Volume, Low Engagement | **35** |
-| Author_42 | Tech | 87 | 1.16 | 1.52 | High Volume, Low Engagement | **31** |
-| Author_47 | Lifestyle | 90 | 1.42 | 1.75 | High Volume, Low Engagement | **30** |
-| Author_20 | Business | 76 | 1.26 | 1.56 | High Volume, Low Engagement | **23** |
-| Author_8 | Tech | 82 | 1.27 | 1.52 | High Volume, Low Engagement | **21** |
+| Brenda Martin | Tech | 27 | 2.81 | 6.83 | High Volume, Low Engagement | **109** |
+| Maria Gutierrez | Tech | 35 | 4.97 | 6.83 | High Volume, Low Engagement | **65** |
+| Kimberly Ramirez | Finance | 32 | 2.69 | 4.61 | High Volume, Low Engagement | **61** |
+| Gerald Riggs | Finance | 21 | 1.90 | 4.61 | High Volume, Low Engagement | **57** |
+| Rebecca Lee | Health | 26 | 3.19 | 4.82 | High Volume, Low Engagement | **42** |
+| Joshua Armstrong | Entertainment | 31 | 3.06 | 4.33 | High Volume, Low Engagement | **39** |
+| Emma Combs | Lifestyle | 23 | 2.43 | 3.98 | High Volume, Low Engagement | **36** |
+| Jonathan Anderson | Health | 30 | 3.77 | 4.82 | High Volume, Low Engagement | **32** |
+| Jeffrey Campbell | Entertainment | 30 | 3.27 | 4.33 | High Volume, Low Engagement | **32** |
+| Jamie Jackson | Business | 25 | 2.80 | 3.98 | High Volume, Low Engagement | **29** |
 
-**Business Impact**: Coaching just these top 10 authors to category median would add **337+ engagement points** to the platform (opportunity score sum). At current volumes, this represents a **15-20% platform-wide engagement increase**.
+**Business Impact**: Coaching just these top 10 authors to category median would add **502+ engagement points** to the platform (opportunity score sum). At current volumes, this represents a **15-20% platform-wide engagement increase**.
 
 **Opportunity Score Formula**: `(category_median - current_avg) × total_posts`
 
-Higher scores = bigger improvement potential. Author_18 has the highest opportunity: bringing them from 1.04 to 1.56 avg engagement across 83 posts would add 43 engagements.
+Higher scores = bigger improvement potential. Brenda Martin has the highest opportunity: bringing her from 2.81 to 6.83 avg engagement across 27 posts would add 109 engagements.
 
 ### Query 3: Engagement Patterns by Time
 
@@ -375,8 +393,8 @@ curl https://jumper-analytics.shaily.dev/engagement/1
 ```json
 {
   "post_id": 1,
-  "title": "Understanding Modern Data Analytics",
-  "author_name": "Author_5",
+  "title": "Understanding Machine Learning: A Deep Dive",
+  "author_name": "Matthew Harris",
   "category": "Tech",
   "publish_date": "2024-11-15",
   "views": 1234,

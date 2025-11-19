@@ -13,6 +13,10 @@ from datetime import datetime, timedelta
 from typing import List, Tuple
 import psycopg2
 from psycopg2.extras import execute_values
+from faker import Faker
+
+# Initialize Faker for realistic data generation
+fake = Faker()
 
 # Configuration
 NUM_AUTHORS = 50
@@ -36,6 +40,105 @@ HOUR_WEIGHTS = {
 # Weekday engagement multiplier (Monday=0, Sunday=6)
 WEEKDAY_WEIGHTS = {0: 1.0, 1: 1.0, 2: 1.0, 3: 1.0, 4: 0.9, 5: 0.6, 6: 0.5}
 
+# Realistic post title templates per category
+TITLE_TEMPLATES = {
+    "Tech": [
+        "Understanding {topic}: A Deep Dive",
+        "Why {topic} Matters in 2025",
+        "{number} Tips for Mastering {topic}",
+        "The Future of {topic}: What You Need to Know",
+        "How to Build Better {topic} Solutions",
+        "{topic} Best Practices Every Developer Should Know",
+        "A Beginner's Guide to {topic}",
+        "{topic}: Common Mistakes and How to Avoid Them"
+    ],
+    "Lifestyle": [
+        "{number} Ways to Improve Your {topic}",
+        "The Ultimate Guide to {topic}",
+        "How I Transformed My Life with {topic}",
+        "{topic}: A Journey to Better Living",
+        "Simple {topic} Habits That Changed Everything",
+        "The Science Behind {topic}",
+        "Why {topic} Is More Important Than You Think"
+    ],
+    "Business": [
+        "{topic}: Strategies for Success",
+        "How to Scale Your {topic} in {number} Steps",
+        "The Complete Guide to {topic}",
+        "{topic} Lessons from Industry Leaders",
+        "Building a Winning {topic} Strategy",
+        "{number} {topic} Mistakes That Cost Companies Millions",
+        "Modern Approaches to {topic}"
+    ],
+    "Health": [
+        "The {topic} Revolution: What Science Says",
+        "{number} Evidence-Based {topic} Tips",
+        "Understanding {topic}: A Medical Perspective",
+        "How {topic} Affects Your Daily Life",
+        "{topic}: Separating Fact from Fiction",
+        "The Ultimate {topic} Optimization Guide",
+        "Natural Ways to Improve Your {topic}"
+    ],
+    "Finance": [
+        "{topic} Strategies for Long-Term Success",
+        "The Truth About {topic} in 2025",
+        "{number} {topic} Principles Everyone Should Know",
+        "Mastering {topic}: A Practical Approach",
+        "How to Build Wealth Through {topic}",
+        "{topic}: What the Experts Won't Tell You",
+        "Smart {topic} Decisions for Your Future"
+    ],
+    "Entertainment": [
+        "Why {topic} Is Taking Over in 2025",
+        "The Evolution of {topic}: A Deep Analysis",
+        "{number} Reasons Why {topic} Matters",
+        "Inside the World of {topic}",
+        "{topic}: Past, Present, and Future",
+        "The Cultural Impact of {topic}",
+        "Discovering {topic}: A Fan's Perspective"
+    ]
+}
+
+# Topic words per category for realistic titles
+TOPIC_WORDS = {
+    "Tech": [
+        "Machine Learning", "Cloud Architecture", "API Design", "Database Optimization",
+        "Microservices", "DevOps", "Kubernetes", "CI/CD Pipelines", "System Design",
+        "Data Engineering", "Frontend Development", "Backend Architecture", "Security"
+    ],
+    "Lifestyle": [
+        "Morning Routine", "Productivity", "Wellness", "Mindfulness", "Work-Life Balance",
+        "Personal Growth", "Habit Building", "Time Management", "Minimalism", "Self-Care"
+    ],
+    "Business": [
+        "Strategy", "Leadership", "Growth Hacking", "Team Building", "Product Management",
+        "Customer Success", "Sales", "Marketing", "Operations", "Innovation"
+    ],
+    "Health": [
+        "Nutrition", "Exercise", "Sleep", "Mental Health", "Stress Management",
+        "Immune System", "Cardiovascular Health", "Fitness", "Wellness", "Recovery"
+    ],
+    "Finance": [
+        "Investing", "Budgeting", "Retirement Planning", "Portfolio Management",
+        "Tax Strategy", "Real Estate", "Passive Income", "Financial Independence",
+        "Wealth Building", "Risk Management"
+    ],
+    "Entertainment": [
+        "Streaming", "Gaming", "Music", "Film", "Television", "Pop Culture",
+        "Social Media", "Content Creation", "Digital Art", "Virtual Reality"
+    ]
+}
+
+# Category-specific tags for more realistic metadata
+CATEGORY_TAGS = {
+    "Tech": ["Python", "SQL", "Cloud", "API", "DevOps", "Security", "Performance", "Scalability"],
+    "Lifestyle": ["Wellness", "Productivity", "Mindfulness", "Habits", "Growth", "Balance"],
+    "Business": ["Strategy", "Leadership", "Growth", "Marketing", "Sales", "Innovation"],
+    "Health": ["Nutrition", "Fitness", "Mental Health", "Wellness", "Science-Based"],
+    "Finance": ["Investing", "Wealth", "Planning", "Portfolio", "Tax Strategy"],
+    "Entertainment": ["Streaming", "Gaming", "Culture", "Media", "Trends"]
+}
+
 
 def get_db_connection():
     """Create PostgreSQL connection."""
@@ -49,12 +152,12 @@ def get_db_connection():
 
 
 def generate_authors() -> List[Tuple]:
-    """Generate author records."""
+    """Generate author records with realistic names."""
     authors = []
     start_date = datetime(2018, 1, 1)
 
     for i in range(1, NUM_AUTHORS + 1):
-        name = f"Author_{i}"
+        name = fake.name()  # Realistic names like "Sarah Thompson", "Michael Chen"
         joined_date = start_date + timedelta(days=random.randint(0, 2500))
         category = random.choice(CATEGORIES)
         authors.append((name, joined_date.date(), category))
@@ -83,7 +186,12 @@ def generate_posts() -> List[Tuple]:
             minutes=random.randint(0, 59)
         )
 
-        title = f"Post about {category} topic {random.randint(1000, 9999)}"
+        # Generate realistic title from category-specific templates
+        template = random.choice(TITLE_TEMPLATES[category])
+        topic = random.choice(TOPIC_WORDS[category])
+        number = random.choice([3, 5, 7, 10, 12, 15])
+        title = template.format(topic=topic, number=number)
+
         content_length = random.randint(200, 3000)
         has_media = random.random() < 0.6  # 60% have media
 
@@ -183,15 +291,23 @@ def generate_realistic_timestamp(post_timestamp: datetime) -> datetime:
 
 
 def generate_post_metadata(num_posts: int) -> List[Tuple]:
-    """Generate post metadata."""
+    """Generate post metadata with category-specific tags."""
     metadata = []
-    tag_options = [
-        "SQL", "Python", "Analytics", "Wellness", "Morning", "Tips",
-        "Optimization", "Tutorial", "Guide", "Review", "Trends"
-    ]
+
+    # Need to get category for each post from database
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT post_id, category FROM posts ORDER BY post_id")
+    post_categories = {post_id: category for post_id, category in cursor.fetchall()}
+    cursor.close()
+    conn.close()
 
     for post_id in range(1, num_posts + 1):
-        tags = random.sample(tag_options, k=random.randint(1, 4))
+        # Get category-specific tags
+        category = post_categories.get(post_id, random.choice(CATEGORIES))
+        available_tags = CATEGORY_TAGS.get(category, CATEGORY_TAGS["Tech"])
+        tags = random.sample(available_tags, k=min(random.randint(2, 4), len(available_tags)))
+
         is_promoted = random.random() < 0.05  # 5% promoted
         language = "en"
 

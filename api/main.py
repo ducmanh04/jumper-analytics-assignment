@@ -34,7 +34,7 @@ def load_sql_query(filepath):
 
 app = FastAPI(
     title="Engagement Analytics API",
-    description="Real-time engagement trends and analytics",
+    description="Real-time engagement trends and analytics with interactive dashboard. Features include live data visualizations, complete project documentation, database schema explorer, and production SQL queries.",
     version="1.0.0"
 )
 
